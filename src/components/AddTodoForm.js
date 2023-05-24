@@ -2,8 +2,7 @@ import React from 'react'
 import { useState } from 'react';
 import './AddButton.css';
 
-const AddButton = ({addTodo}) => {
-    const [isFormVisible, setFormVisible] = useState(false);
+const AddTodoForm = ({addTodo,toggleFormVisibility}) => {
     const [formData, setFormData] = useState({
         date: '',
         time: '',
@@ -34,13 +33,9 @@ const AddButton = ({addTodo}) => {
         });
       };
 
-    const toggleFormVisibility = () => {
-      setFormVisible(!isFormVisible);
-    };
     const isSubmitDisabled = Object.values(formData).some((value) => value === '');
   return (
     <div className='container d-flex justify-content-center align-items-center vh-100'>
-    {isFormVisible&&(
         <form onSubmit={handleSubmit} className='d-flex flex-column custom-form '>
             <h3>Add Task</h3>
             <div className='row'>
@@ -134,12 +129,8 @@ const AddButton = ({addTodo}) => {
             </div>
            </div>
          </form>
-    )}
-    <div className="position-fixed bottom-0 end-0 p-3 " onClick={toggleFormVisibility}>
-    <button className="btn  btn-lg btn-dark rounded-circle">+</button>
-    </div>
     </div>
   )
 }
 
-export default AddButton
+export default AddTodoForm
