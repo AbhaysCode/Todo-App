@@ -1,0 +1,18 @@
+form{
+    height: auto;
+}
+.custom-form{
+    max-width: 600px;
+    width: 100%;
+}
+textarea {
+    resize: none; /* Optional - disable manual resizing */
+    overflow: hidden; /* Hide overflowing content */
+  }
+
+  textarea.form-control {
+    height: auto; /* Let the height adjust based on content */
+  }
+.custom-btn{
+    width: 100%;
+}
