@@ -1,21 +1,20 @@
 import React from 'react'
 import TodoListItem from './TodoListItem.js'
 
-const TodoList = ({todos}) => {
-  const onDeleteTodo = (id) =>{
-    console.log("In TodoList.js id of item to be deleted is ",id);
-  }
+const TodoList = ({todos,handleTaskChange,handleDeleteTodo}) => {
   return (
     <div className='row p-3'>
-    {todos.map((todoItem,index)=>{
+    {todos.map((todoItem)=>{
         return (<TodoListItem
-         key={index}
-         onDeleteTodo={onDeleteTodo}
+         id={todoItem.id}
+         key={todoItem.id}
+         handleDeleteTodo={handleDeleteTodo}
          date={todoItem.date} 
          time={todoItem.time} 
          task={todoItem.task} 
          category={todoItem.category}
          priority={todoItem.priority}
+         handleTaskChange={handleTaskChange}
          />)
     })}
     </div>
