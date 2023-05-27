@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState,useEffect } from 'react';
 import AddTodoForm from './components/AddTodoForm';
 import TodoList from './components/TodoList.js';
 import Navbar from './components/Navbar';
@@ -8,40 +8,7 @@ import './App.css';
 
 
 function App() {
-  const [todos,setTodos] = useState([
-    {
-    id:uuidv4(),
-    category: "Productivity",
-    date: "2023-05-05",
-    priority: "high",
-    task: "Testing is the Priority. I am Invincible.",
-    time: "19:10"
-  },
-    {
-    id:uuidv4(),
-    category: "Productivity",
-    date: "2023-05-05",
-    priority: "high",
-    task: "Testing is the Priority. I am Invincible.",
-    time: "19:10"
-  },
-    {
-    id:uuidv4(),
-    category: "Productivity",
-    date: "2023-05-05",
-    priority: "low",
-    task: "Testing is the Priority. I am Invincible.",
-    time: "19:10"
-  },
-    {
-    id:uuidv4(),
-    category: "Productivity",
-    date: "2023-05-05",
-    priority: "medium",
-    task: "Testing is the Priority. I am Invincible.",
-    time: "19:10"
-  }
-]);
+  const [todos,setTodos] = useState([]);
 
   const [showForm,setShowForm] = useState(false);
 
@@ -50,20 +17,70 @@ function App() {
   }
 
   const addTodo = (newTodo) => {
+    fetch("http://localhost:3000/todo/create",{
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(newTodo)
+    })
+      .then(response => {
+        if (response.ok) {
+          console.log('Todo added successfully');
+        }
+      })
+      .catch(error => {
+        console.error('Error:', error);
+      });
     setTodos([...todos,newTodo]);
   }
-
   const handleTaskChange = (todoId, newTask) => {
+    fetch(`http://localhost:3000/todo/${todoId}`, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({task:newTask})
+    }).then(() => {
+          console.log('Todo updated successfully');
+      })
+      .catch(error => {
+        console.error('Error:', error);
+      });
+    
     setTodos((prevTodo) =>
       prevTodo.map((todo) =>
-        todo.id === todoId ? { ...todo, task: newTask } : todo
+        todo._id === todoId ? { ...todo, task: newTask } : todo
       )
     );
   };
 
   const handleDeleteTodo = (todoId) =>{
-    setTodos((prevTodos) => prevTodos.filter((todo) => todo.id !== todoId));
+    console.log("id of todo to be deleted : ",todoId);
+    fetch(`http://localhost:3000/todo/delete/${todoId}`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
+      .then((response) => {
+        if (response.ok) {
+          setTodos(prevTodos => prevTodos.filter(todo => todo._id !== todoId));
+          console.log("Updtaed Value of todos : ",todos);
+        } else {
+          throw new Error('Error deleting the todo');
+        }
+      })
+      .catch(error => {
+        console.error('Error:', error);
+      });
   }
+  useEffect(()=>{
+    fetch("http://localhost:3000/todo").then(res=>res.json())
+    .then(data=>setTodos(data));
+    console.log("In the UseEffect Hook");
+    console.log("Value of todos is : ",todos);
+  },[])
 
   return (
     <> 
