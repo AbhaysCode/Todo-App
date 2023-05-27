@@ -22,7 +22,6 @@ const AddTodoForm = ({addTodo,toggleFormVisibility}) => {
     
       const handleSubmit = (e) => {
         e.preventDefault();
-        toggleFormVisibility();
         addTodo(formData);
         console.log("FormData,Submit is Clicked",formData);
         setFormData({
@@ -37,9 +36,20 @@ const AddTodoForm = ({addTodo,toggleFormVisibility}) => {
 
     const isSubmitDisabled = Object.values(formData).some((value) => value === '');
   return (
-    <div className='container d-flex justify-content-center align-items-center vh-100'>
-        <form onSubmit={handleSubmit} className='d-flex flex-column custom-form '>
-            <h3>Add Task</h3>
+
+    <div className='container'>
+      <div className="position-fixed bottom-0 end-0 p-3 ">
+        <button className="btn  btn-lg btn-dark rounded-circle"
+         data-bs-toggle="modal"
+         data-bs-target="#modal"
+         >+</button>
+      </div>
+      <div className='modal fade' id='modal'>
+        <div className='modal-dialog modal-dialog-centered'>
+          <div className='modal-content'>
+            <div className='modal-header'><h1 className="text-center mx-auto">Add Task</h1></div>
+            <div className='modal-body'>
+            <form onSubmit={handleSubmit} className='d-flex flex-column custom-form '>
             <div className='row'>
                 <div className="mb-2 col">
                 <label htmlFor="date" className="form-label">
@@ -70,34 +80,32 @@ const AddTodoForm = ({addTodo,toggleFormVisibility}) => {
                 />
               </div>
             </div>
-           <div className="form-group mb-2">
-              <label htmlFor="task">Task</label>
+           <div className="form-group mb-2 ">
+            <div className="form-floating">
               <textarea 
               name='task'
               className="form-control"
               id="task" 
               rows="4" 
+              placeholder='task'
               value={formData.task} 
               onChange={handleChange}></textarea>
+              <label htmlFor="task">Task</label>
+              </div>
             </div>
             <div className='row'>
               <div className="mb-4 col">
                 <label htmlFor="category" className="form-label">
                   Category
                 </label>
-                <select
-                  className="form-select"
-                  id="category"
-                  name="category"
-                  value={formData.category}
-                  onChange={handleChange}
-                  required
-                >
-                  <option value="">Select Category</option>
-                  <option value="Productivity">Productivity</option>
-                  <option value="Daily Work">Daily Work</option>
-                  <option value="Fitness">Fitness</option>
-                </select>
+               <input 
+               type='text'
+               name='category'
+               className='form-control'
+               id='category'
+               value={formData.category}
+               onChange={handleChange}
+               />
               </div>
               <div className="mb-4 col">
                 <label htmlFor="priority" className="form-label">
@@ -120,19 +128,31 @@ const AddTodoForm = ({addTodo,toggleFormVisibility}) => {
               </div>
            <div className='row'>
             <div className='col-6'>
-              <button type="button" className="btn btn-danger custom-btn" onClick={toggleFormVisibility}>
+              <button type="button" 
+              className="btn btn-outline-secondary custom-btn" 
+              data-bs-dismiss="modal"
+              data-bs-target="#modal"
+              >
                 Cancel
               </button>
             </div>
             <div className='col-6 '>
-              <button type="submit" className="btn btn-primary custom-btn" disabled={isSubmitDisabled}>
+              <button type="submit" 
+              className="btn btn-primary custom-btn"
+              data-bs-dismiss="modal"
+              data-bs-target="#modal"
+               disabled={isSubmitDisabled}>
                 Submit
               </button>
             </div>
            </div>
          </form>
-    </div>
-  )
+            </div>
+          </div>
+        </div>
+      </div>
+      </div>
+      )
 }
 
 export default AddTodoForm

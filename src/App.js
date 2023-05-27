@@ -84,10 +84,8 @@ function App() {
 
   return (
     <> 
-    {showForm ? (
-    <AddTodoForm addTodo={addTodo} toggleFormVisibility={toggleFormVisibility}/>):(
-      <div className='p-0'>
         <Navbar />
+        <AddTodoForm addTodo={addTodo} toggleFormVisibility={toggleFormVisibility}/>
         {todos.length === 0 ? (
           <div className="text-center">
             <img src={NoTodos} alt="Empty Todos" className="img-fluid" style={{ height: '200px' }}/>
@@ -98,11 +96,6 @@ function App() {
             <TodoList todos={todos} handleTaskChange={handleTaskChange} handleDeleteTodo={handleDeleteTodo}/>
           </div>
         )}
-      </div>
-    )}
-    <div className="position-fixed bottom-0 end-0 p-3 " onClick={toggleFormVisibility}>
-      <button className="btn  btn-lg btn-dark rounded-circle">+</button>
-    </div>
     </>
   );
 }
